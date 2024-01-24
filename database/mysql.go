@@ -6,6 +6,7 @@ import (
 	"go-graphql-api/logger"
 	"go-graphql-api/util"
 	"strconv"
+	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -15,6 +16,7 @@ import (
 var (
 	_db_name              = "Blog_Posts"
 	_db_instance *gorm.DB = nil
+	_db_init_mtx sync.Mutex
 )
 
 // Var for error handling
@@ -35,7 +37,20 @@ func get_connection_url() (string, error) {
 	return fmt.Sprintf("%s:%s@tcp(%s)/?%s", user, pass, host, opts), nil
 }
 
-func InitDatabase() (*gorm.DB, error) {
+// Get and return the datase instance.
+// The database is initialized the first time this is called.
+func GetDbInstance() (*gorm.DB, error) {
+	_db_init_mtx.Lock()
+	defer _db_init_mtx.Unlock()
+
+	if _db_instance == nil {
+		return init_database()
+	} else {
+		return _db_instance, nil
+	}
+}
+
+func init_database() (*gorm.DB, error) {
 	err := connect_db()
 	if err != nil {
 		return nil, err

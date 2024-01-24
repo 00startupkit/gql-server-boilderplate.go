@@ -24,7 +24,7 @@ func main() {
 
 	port := util.EnvOrDefault("SERVER_PORT", defaultPort)
 
-	db, err := database.InitDatabase()
+	db, err := database.GetDbInstance()
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate database connection: %v", err))
 	}
