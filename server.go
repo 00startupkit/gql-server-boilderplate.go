@@ -24,15 +24,13 @@ func main() {
 
 	port := util.EnvOrDefault("SERVER_PORT", defaultPort)
 
-	err = database.ConnectDB()
+	db, err := database.InitDatabase()
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate database connection: %v", err))
 	}
-	database.CreateDB()
-	database.MigrateDB()
 
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		Database: database.DBInstance,
+		Database: db,
 	}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))

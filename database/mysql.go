@@ -13,8 +13,8 @@ import (
 
 // a variable to store database connection
 var (
-	_db_name            = "Blog_Posts"
-	DBInstance *gorm.DB = nil
+	_db_name              = "Blog_Posts"
+	_db_instance *gorm.DB = nil
 )
 
 // Var for error handling
@@ -35,13 +35,22 @@ func get_connection_url() (string, error) {
 	return fmt.Sprintf("%s:%s@tcp(%s)/?%s", user, pass, host, opts), nil
 }
 
-// connecting to the db
-func ConnectDB() error {
+func InitDatabase() (*gorm.DB, error) {
+	err := connect_db()
+	if err != nil {
+		return nil, err
+	}
+	create_db()
+	migrate_db()
+	return _db_instance, nil
+}
+
+func connect_db() error {
 	connection_string, err := get_connection_url()
 	if err != nil {
 		return err
 	}
-	DBInstance, err = gorm.Open("mysql", connection_string)
+	_db_instance, err = gorm.Open("mysql", connection_string)
 	if err != nil {
 		return err
 	}
@@ -57,24 +66,24 @@ func ConnectDB() error {
 		return err
 	}
 
-	DBInstance.DB().SetMaxIdleConns(max_idle_conn)
-	DBInstance.DB().SetMaxOpenConns(max_open_conn)
+	_db_instance.DB().SetMaxIdleConns(max_idle_conn)
+	_db_instance.DB().SetMaxOpenConns(max_open_conn)
 
 	// log all database operations performed by this connection
-	DBInstance.LogMode(true)
+	_db_instance.LogMode(true)
 	return nil
 }
 
-func CreateDB() {
-	DBInstance.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", _db_name))
-	DBInstance.Exec(fmt.Sprintf("USE %s", _db_name))
+func create_db() {
+	_db_instance.Exec(fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", _db_name))
+	_db_instance.Exec(fmt.Sprintf("USE %s", _db_name))
 }
 
-func MigrateDB() {
+func migrate_db() {
 	logger.Info("Migrating %d model(s)", len(dbmodel.Models))
 	for _, model := range dbmodel.Models {
 		logger.Info("> Migrating model: %#v", model)
-		DBInstance.AutoMigrate(model)
+		_db_instance.AutoMigrate(model)
 	}
 
 	logger.Info("Database migration completed....")
