@@ -25,7 +25,7 @@ var err error
 func get_connection_url() (string, error) {
 	user := util.EnvOrDefault("MYSQL_USER", "")
 	pass := util.EnvOrDefault("MYSQL_PASS", "")
-	host := util.EnvOrDefault("MYSQL_ADDR", "")
+	host := util.EnvOrDefault("MYSQL_HOST", "")
 
 	if len(user) == 0 || len(pass) == 0 || len(host) == 0 {
 		return "", fmt.Errorf(fmt.Sprintf(`mysql connection variables not set:
