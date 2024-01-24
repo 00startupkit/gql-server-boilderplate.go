@@ -43,7 +43,11 @@ func CreateDB() {
 }
 
 func MigrateDB() {
-	// migrate and sync the model to create a db table
-	DBInstance.AutoMigrate(&dbmodel.Post{})
+	fmt.Printf("Migrating %d model(s)\n", len(dbmodel.Models))
+	for _, model := range dbmodel.Models {
+		fmt.Printf("> Migrating model: %#v\n", model)
+		DBInstance.AutoMigrate(model)
+	}
+
 	fmt.Println("Database migration completed....")
 }

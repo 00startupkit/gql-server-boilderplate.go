@@ -9,3 +9,9 @@ type Post struct {
 	Published_At string `json:"PublishedAt"`
 	Updated_At   string `json:"UpdateAt"`
 }
+
+// Models defined here will be auto migrated into the database
+// when the application starts.
+var Models = []interface{}{
+	&Post{},
+}
