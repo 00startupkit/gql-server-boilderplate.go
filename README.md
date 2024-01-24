@@ -24,3 +24,5 @@ SERVER_PORT=8090
 # Starting the Server
 The project is configured with *[cosmtrek/air](https://github.com/cosmtrek/air)* to hot reload. The config is located in `.air.toml`. After downloading the  *air* executable with `go install github.com/cosmtrek/air@latest`, the hot-reloadable server can be started by running `air`.
 
+# Adding Database Models
+The database models are defined in `dbmodel/db_model.go`. To add a model to be auto-migrated on startup, define the model struct and add it to the `Models` variable found in that file.
