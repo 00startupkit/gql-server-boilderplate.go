@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"go-graphql-api/graph"
+	oauth "go-graphql-api/oauth2"
 	"go-graphql-api/util"
 	"go-graphql-api/util/gql_middleware"
 	"go-graphql-api/util/logger"
@@ -24,7 +25,6 @@ func main() {
 		panic(fmt.Errorf("failed to setup environment: %v", err))
 	}
 
-	port := util.EnvOrDefault("SERVER_PORT", defaultPort)
 	db, err := database.GetDbInstance()
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate database connection: %v", err))
@@ -40,19 +40,15 @@ func main() {
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)
+	oauth.RegisterOauthRoutes(router)
 
-	logger.Info("connect to http://localhost:%s/ for GraphQL playground", port)
-	err = http.ListenAndServe(":"+port, router)
+	logger.Info("connect to %s/ for GraphQL playground", util.ServerUri())
+	err = http.ListenAndServe(":"+util.ServerPort(), router)
 	if err != nil {
 		panic(err)
 	}
 }
 
 func setup_environment() error {
-	err := godotenv.Load()
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return godotenv.Load()
 }

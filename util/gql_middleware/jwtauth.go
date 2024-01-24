@@ -69,7 +69,7 @@ func ProcessAuthFromRequestHeader(r *http.Request) (*http.Request, error) {
 	}
 	// Successfully parsed the user payload, store it in the request's context.
 	logger.Info("User auth token translated to a valid user payload.")
-	ctx := context.WithValue(r.Context(), "user", user)
+	ctx := context.WithValue(r.Context(), util.ContextKey_User, user)
 	return r.WithContext(ctx), nil
 
 }

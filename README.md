@@ -22,6 +22,9 @@ SERVER_PORT=8090
 JWT_SECRET=yourtokensecret
 ```
 
+## Configuring OAuth2
+OAuth2 settings can be configured from `oauth2/config.go`. *Google* is defined there by default. For it to work, set the proper `GOOGLE_CLIENT_*` environment variables. Extend the list to define multiple OAuth2 providers. Make sure to also implement the conversion from the user payload from the provider to the *user* model that will be stored in the database.
+
 # Starting the Server
 The project is configured with *[cosmtrek/air](https://github.com/cosmtrek/air)* to hot reload. The config is located in `.air.toml`. After downloading the  *air* executable with `go install github.com/cosmtrek/air@latest`, the hot-reloadable server can be started by running `air`.
 
