@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"go-graphql-api/graph"
-	"go-graphql-api/logger"
 	"go-graphql-api/util"
+	"go-graphql-api/util/logger"
 	"net/http"
 
 	"go-graphql-api/database"

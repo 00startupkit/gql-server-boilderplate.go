@@ -3,8 +3,8 @@ package database
 import (
 	"fmt"
 	"go-graphql-api/dbmodel"
-	"go-graphql-api/logger"
 	"go-graphql-api/util"
+	"go-graphql-api/util/logger"
 	"strconv"
 	"sync"
 
