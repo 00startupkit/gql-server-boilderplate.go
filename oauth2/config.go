@@ -52,7 +52,7 @@ var (
 			},
 		},
 	}
-	_oauth_state_key = "placeholderstatekey"
+	_oauth_state_key = util.EnvOrDefault("OAUTH_STATE_KEY", "")
 )
 
 func redirect_home(w http.ResponseWriter, r *http.Request) {
