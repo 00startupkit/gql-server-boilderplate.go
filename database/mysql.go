@@ -3,6 +3,7 @@ package database
 import (
 	"fmt"
 	"go-graphql-api/dbmodel"
+	"go-graphql-api/logger"
 	"go-graphql-api/util"
 	"strconv"
 
@@ -70,11 +71,11 @@ func CreateDB() {
 }
 
 func MigrateDB() {
-	fmt.Printf("Migrating %d model(s)\n", len(dbmodel.Models))
+	logger.Info("Migrating %d model(s)", len(dbmodel.Models))
 	for _, model := range dbmodel.Models {
-		fmt.Printf("> Migrating model: %#v\n", model)
+		logger.Info("> Migrating model: %#v", model)
 		DBInstance.AutoMigrate(model)
 	}
 
-	fmt.Println("Database migration completed....")
+	logger.Info("Database migration completed....")
 }

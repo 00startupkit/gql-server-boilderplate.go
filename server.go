@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"go-graphql-api/graph"
+	"go-graphql-api/logger"
 	"go-graphql-api/util"
-	"log"
 	"net/http"
 
 	"go-graphql-api/database"
@@ -38,8 +38,11 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	logger.Info("connect to http://localhost:%s/ for GraphQL playground", port)
+	err = http.ListenAndServe(":"+port, nil)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func setup_environment() error {
