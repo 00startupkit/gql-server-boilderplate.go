@@ -1,7 +1,7 @@
 package util
 
 import (
-	"fmt"
+	"go-graphql-api/util/logger"
 	"os"
 )
 
@@ -10,7 +10,7 @@ import (
 func EnvOrDefault(envkey string, default_value string) string {
 	value := os.Getenv(envkey)
 	if value == "" {
-		fmt.Fprintf(os.Stderr, "Env variable \"%s\" not defined, using default value: %s", envkey, default_value)
+		logger.Err("Env variable \"%s\" not defined, using default value: \"%s\"", envkey, default_value)
 		value = default_value
 	}
 	return value

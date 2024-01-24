@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-graphql-api/graph"
 	"go-graphql-api/util"
+	"go-graphql-api/util/gql_middleware"
 	"go-graphql-api/util/logger"
 	"net/http"
 
@@ -11,6 +12,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-chi/chi"
 	"github.com/joho/godotenv"
 )
 
@@ -23,21 +25,24 @@ func main() {
 	}
 
 	port := util.EnvOrDefault("SERVER_PORT", defaultPort)
-
 	db, err := database.GetDbInstance()
 	if err != nil {
 		panic(fmt.Errorf("failed to instantiate database connection: %v", err))
 	}
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{
-		Database: db,
-	}}))
+	router := chi.NewRouter()
+	router.Use(gql_middleware.JwtAuthMiddleware())
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", srv)
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(
+		graph.Config{Resolvers: &graph.Resolver{
+			Database: db,
+		}}))
+
+	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	router.Handle("/query", srv)
 
 	logger.Info("connect to http://localhost:%s/ for GraphQL playground", port)
-	err = http.ListenAndServe(":"+port, nil)
+	err = http.ListenAndServe(":"+port, router)
 	if err != nil {
 		panic(err)
 	}
