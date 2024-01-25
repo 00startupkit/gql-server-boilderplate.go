@@ -12,6 +12,8 @@ mysql database.
 ```
 git clone https://github.com/00startupkit/gql-server-boilderplate.go.git
 go get ./...
+go install github.com/cosmtrek/air@latest
+# The air binary might be stored in ~/go/bin so make sure its in your path.
 ```
 
 # Setting up Environment
@@ -24,6 +26,7 @@ MYSQL_PASS=password
 MYSQL_HOST=localhost:3306
 MYSQL_IDLE_CONNECTIONS=10
 MYSQL_OPEN_CONNECTIONS=100
+SERVER_HOST=http://localhost
 SERVER_PORT=8090
 JWT_SECRET=yourtokensecret
 ```
@@ -36,3 +39,6 @@ The project is configured with *[cosmtrek/air](https://github.com/cosmtrek/air)*
 
 # Adding Database Models
 The database models are defined in `dbmodel/db_model.go`. To add a model to be auto-migrated on startup, define the model struct and add it to the `Models` variable found in that file.
+
+# TODO
+- Update chi dependency from deprecated version 1.5.5.
