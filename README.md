@@ -45,3 +45,5 @@ The database models are defined in `dbmodel/db_model.go`. To add a model to be a
 
 # TODO
 - Update chi dependency from deprecated version 1.5.5.
+- Enable cors for the server.
+- Store the auth token in the response's cookies on oauth success.
