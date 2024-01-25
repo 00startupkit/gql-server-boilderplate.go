@@ -8,6 +8,12 @@
 This is boilerplate for setting up a GraphQL api server backed by a
 mysql database.
 
+# Install
+```
+git clone https://github.com/00startupkit/gql-server-boilderplate.go.git
+go get ./...
+```
+
 # Setting up Environment
 Environment will be automatically loaded by `joho/dotenv` at the start of the
 application. Here is an example `.env` that should work for the current config:
