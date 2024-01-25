@@ -16,6 +16,9 @@ go install github.com/cosmtrek/air@latest
 # The air binary might be stored in ~/go/bin so make sure its in your path.
 ```
 
+## Prerequisites
+This server configuration assumes a MySQL instance is configured and running. Once you have your MySQL instance running, configure the connection setting in the environment variables in the [steps below](https://github.com/00startupkit/gql-server-boilderplate.go?tab=readme-ov-file#setting-up-environment).
+
 # Setting up Environment
 Environment will be automatically loaded by `joho/dotenv` at the start of the
 application. Here is an example `.env` that should work for the current config:
